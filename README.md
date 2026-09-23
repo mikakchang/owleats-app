@@ -1,6 +1,6 @@
 # OwlEats demo
 
-OwlEats is a Rice Dining concept demo for a personalized menu preview and SMS experience. The app now attempts a server-side scrape of the configured Rice Dining source once per hour and falls back to synthetic menu data when the source is blocked or has no structured menu payload. It does not send texts or authenticate users yet.
+OwlEats is a personalized, automated text and web notification system for Rice Dining. This repository currently contains the concept demo for a personalized menu preview and SMS experience. The app attempts a server-side scrape of the configured Rice Dining source once per hour and falls back to synthetic menu data when the source is blocked or has no structured menu payload. It does not send texts or authenticate users yet.
 
 ## Run locally
 
