@@ -23,6 +23,7 @@ const serverySources = {
   North: `${source}/north-servery`,
   West: `${source}/west-servery`,
   South: `${source}/south-servery`,
+  Baker: `${source}/baker-college-kitchen`,
   Seibel: `${source}/seibel-servery`,
   "South Main": `${source}/south-main-servery`
 } as const;
@@ -106,12 +107,14 @@ function parseMealSection(section: string): MenuItem[] {
 }
 
 function parseMenuFromHtml(html: string, servery: string): Partial<RiceMenu> | null {
-  const dailyBlock = html.match(/<div id=["']block-weeklymenubystations["'][\s\S]*?<div id=["']block-weeklylunch["']/i)?.[0];
+  const dailyBlockStart = html.search(/<div id=["']block-weeklymenubystations["']/i);
+  const dailyBlock = dailyBlockStart >= 0 ? html.slice(dailyBlockStart) : "";
   if (!dailyBlock) return null;
   const sections = Array.from(dailyBlock.matchAll(/<h2>\s*(LUNCH|DINNER)\s*<\/h2>([\s\S]*?)(?=<h2>\s*(?:LUNCH|DINNER)\s*<\/h2>|$)/gi));
   const result: Partial<RiceMenu> = {};
-  for (const section of sections.slice(0, 2)) {
+  for (const section of sections) {
     const meal = section[1].toLowerCase() === "lunch" ? "Lunch" : "Dinner";
+    if (result[meal]?.[servery]) continue;
     const items = parseMealSection(section[2]);
     if (items.length) result[meal] = { [servery]: items };
   }
@@ -129,13 +132,13 @@ export async function fetchRiceMenus(): Promise<MenuFetchResult> {
           next: { revalidate: 3600 }
         });
         if (!response.ok) throw new Error(`${servery} returned HTTP ${response.status}`);
-        return parseMenuFromHtml(await response.text(), servery);
+        return { servery, parsed: parseMenuFromHtml(await response.text(), servery) };
       })
     );
     const menus: RiceMenu = { Lunch: {}, Dinner: {} };
-    for (const parsed of responses) {
-      if (parsed?.Lunch) Object.assign(menus.Lunch, parsed.Lunch);
-      if (parsed?.Dinner) Object.assign(menus.Dinner, parsed.Dinner);
+    for (const response of responses) {
+      if (response.parsed?.Lunch) Object.assign(menus.Lunch, response.parsed.Lunch);
+      if (response.parsed?.Dinner) Object.assign(menus.Dinner, response.parsed.Dinner);
     }
     if (!Object.keys(menus.Lunch).length && !Object.keys(menus.Dinner).length) {
       throw new Error("No daily menu items were found in the Rice Dining pages");

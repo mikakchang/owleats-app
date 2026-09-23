@@ -6,7 +6,7 @@ import { demoMenus } from "@/lib/rice-dining";
 
 type Filter = "All" | "Vegan" | "Vegetarian" | "Halal" | "GF";
 
-const serveries = ["North", "West", "South", "Baker"];
+const serveries = ["North", "West", "South", "Baker", "Seibel", "South Main"];
 
 const filterMap: Record<Filter, string[]> = {
   All: [],
