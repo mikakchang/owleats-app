@@ -109,7 +109,7 @@ export default function Home() {
             <div className="featured-panel">
               <div className="featured-top"><div><span className="featured-kicker">Your saved spot</span><h3>{servery} Servery</h3></div><span className="walk-badge">7 min walk ↗</span></div>
               <div className="dish-list">
-                {matched.length ? matched.map((item) => <div className="dish-row" key={item.name}><span className={`dish-swatch ${item.tone}`} /><div className="dish-info"><b>{item.name}</b><span>{item.note}</span></div><div className="tag-list">{item.tags.map((tag) => <span key={tag} className={`diet-tag ${tag === "GF" ? "gf" : ""}`}>{tag}</span>)}</div><button className="save-dish" aria-label={`Save ${item.name}`}>♡</button></div>) : <div className="empty-state"><span>✦</span><b>No exact matches here.</b><p>Try another filter or servery for more options.</p></div>}
+                {matched.length ? matched.map((item, index) => <div className="dish-row" key={`${item.name}-${index}`}><span className={`dish-swatch ${item.tone}`} /><div className="dish-info"><b>{item.name}</b><span>{item.note}</span></div><div className="tag-list">{item.tags.map((tag, tagIndex) => <span key={`${tag}-${tagIndex}`} className={`diet-tag ${tag === "GF" ? "gf" : ""}`}>{tag}</span>)}</div><button className="save-dish" aria-label={`Save ${item.name}`}>♡</button></div>) : <div className="empty-state"><span>✦</span><b>No exact matches here.</b><p>Try another filter or servery for more options.</p></div>}
               </div>
               <button className="menu-link">See full {servery} menu <ArrowIcon /></button>
             </div>
