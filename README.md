@@ -39,3 +39,7 @@ For local testing with an approved feed:
 $env:RICE_DINING_SOURCE_URL="https://approved-menu-feed.example/api"
 npm run dev
 ```
+
+## Live demo (GitHub Pages)
+
+The `Deploy to GitHub Pages` workflow builds a static export on every push to `main` and publishes it at <https://mikakchang.github.io/owleats-app/>. Pages can't run the `/api/menu` server route, so the hosted version always shows the demo menu.
