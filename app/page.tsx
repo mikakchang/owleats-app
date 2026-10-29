@@ -27,6 +27,7 @@ export default function Home() {
   const [servery, setServery] = useState("North");
   const [filter, setFilter] = useState<Filter>("All");
   const [showSetup, setShowSetup] = useState(false);
+  const [reminderSet, setReminderSet] = useState(false);
 
   useEffect(() => {
     fetch("/api/menu")
@@ -118,7 +119,7 @@ export default function Home() {
           <aside className="side-column">
             <div className="event-card">
               <div className="event-art"><span>✦</span><span>年</span><span>✦</span></div>
-              <div className="event-body"><span className="event-label">Special tonight</span><h3>Lunar New Year Dinner</h3><p>Celebrate at North with dumplings, red bean soup, and lion&apos;s head meatballs.</p><div className="event-meta"><span>North Servery</span><span>5:00–8:00 PM</span></div><button className="event-button">Add a reminder <span>+</span></button></div>
+              <div className="event-body"><span className="event-label">Special tonight</span><h3>Lunar New Year Dinner</h3><p>Celebrate at North with dumplings, red bean soup, and lion&apos;s head meatballs.</p><div className="event-meta"><span>North Servery</span><span>5:00–8:00 PM</span></div><button className={`event-button${reminderSet ? " reminder-set" : ""}`} aria-pressed={reminderSet} onClick={() => setReminderSet((value) => !value)}>{reminderSet ? "Reminder set for 4:30 PM" : "Add a reminder"} <span>{reminderSet ? "✓" : "+"}</span></button>{reminderSet && <p className="reminder-note" role="status">We&apos;ll text you 30 minutes before Lunar New Year Dinner starts.</p>}</div>
             </div>
             <div className="text-preview">
               <div className="preview-header"><span className="phone-dot" /><span>OwlEats text preview</span><span className="preview-time">4:30 PM</span></div>
